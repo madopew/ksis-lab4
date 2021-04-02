@@ -1,37 +1,30 @@
-﻿using System;
-using System.Collections;
+﻿/*using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Server.User;
 
-namespace Server
+namespace Server.ServerBase
 {
-    public partial class Server
+    public partial class Server<T> where T : UserBase
     {
         private const int MaxQueueLength = 10;
+        private const int Delay = 100;
         
         private Socket main;
         
         private readonly IPAddress address;
         private readonly ushort port;
 
-        private readonly List<User> playersPool;
+        private readonly List<T> playersPool;
         
         private Thread acceptThread;
         private bool isAccepting;
 
         private Thread receiveThread;
         private bool isReceiving;
-        
-        public Server(IPAddress address, ushort port)
-        {
-            this.address = address ?? throw new ArgumentNullException(nameof(address));
-            this.port = port;
-            playersPool = new List<User>();
-        }
 
         public event EventHandler<GameEventArgs> UserConnected;
         public event EventHandler<GameEventArgs> UserDisconnected; 
@@ -47,6 +40,7 @@ namespace Server
 
         public void Stop()
         {
+                
             isAccepting = false;
             isReceiving = false;
             acceptThread.Join();
@@ -87,7 +81,7 @@ namespace Server
                         }
                     }
 
-                    Thread.Sleep(100);
+                    Thread.Sleep(Delay);
                 }
             });
             receiveThread.IsBackground = true;
@@ -206,4 +200,4 @@ namespace Server
             player.Challenged?.Handler.Send(Encoding.UTF8.GetBytes($"play/{player.Username}\n"));
         }
     }
-}
+}*/
