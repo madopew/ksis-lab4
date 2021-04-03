@@ -5,6 +5,6 @@ namespace Server.Handlers.Interfaces
 {
     public interface IMessageHandler
     {
-        void Handle(string data, GameUser user, GameServer server);
+        void Handle(byte[] data, GameUser user, GameServer server);
     }
 }

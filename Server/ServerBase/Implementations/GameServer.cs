@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -90,7 +91,12 @@ namespace Server.ServerBase.Implementations
             UserDisconnected?.Invoke(this, new GameEventArgs(user, string.Empty));
             pool.Remove(user);
         }
-        
+
+        public IReadOnlyCollection<GameUser> GetUsers()
+        {
+            return new ReadOnlyCollection<GameUser>(pool);
+        }
+
         private void StartAccept()
         {
             isAccepting = true;
@@ -128,7 +134,7 @@ namespace Server.ServerBase.Implementations
                                 content = content.TrimEnd('\n');
                                 
                                 UserMessaged?.Invoke(this, new GameEventArgs(pool[i], content));
-                                handler.Handle(content, pool[i], this);
+                                handler.Handle(data, pool[i], this);
                             }
                         }
                     }

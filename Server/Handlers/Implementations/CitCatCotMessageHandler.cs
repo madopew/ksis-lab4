@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Server.Handlers.Interfaces;
 using Server.ServerBase.Implementations;
 using Server.User;
@@ -16,8 +17,9 @@ namespace Server.Handlers.Implementations
             this.fallback = fallback ?? throw new ArgumentNullException(nameof(fallback));
         }
 
-        public void Handle(string content, GameUser user, GameServer server)
+        public void Handle(byte[] data, GameUser user, GameServer server)
         {
+            string content = Encoding.UTF8.GetString(data).TrimEnd('\0').TrimEnd('\n');
             foreach (var handler in handlers)
             {
                 if (handler.Belongs(content))

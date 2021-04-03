@@ -17,6 +17,10 @@ namespace Server
         {
             var messageHandler = new CCCMessageHandlerBuilder()
                 .AddCommandHandler(new ConnectHandler())
+                .AddCommandHandler(new DieHandler())
+                .AddCommandHandler(new PlayHandler())
+                .AddCommandHandler(new ListHandler())
+                .AddCommandHandler(new MoveHandler())
                 .AddFallbackHandler(new FallbackHandler())
                 .Build();
             
