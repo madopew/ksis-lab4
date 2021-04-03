@@ -49,6 +49,11 @@ namespace Game
                 return CitCatCotActionResult.Fail;
             }
 
+            if (i < 0 || i > 4 || j < 0 || j > 4)
+            {
+                return CitCatCotActionResult.Fail;
+            }
+
             if (board[i][j] != null)
             {
                 return CitCatCotActionResult.Fail;
