@@ -10,6 +10,7 @@ namespace Server.User
         public GameUser Challenged { get; set; }
         public GameUser Opponent { get; set; }
         public CitCatCot Game { get; set; }
+        public int NotReceived { get; set; }
 
         public GameUser(string username, Socket handler)
             : base(handler)

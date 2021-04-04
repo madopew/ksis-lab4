@@ -14,6 +14,8 @@ namespace Server.ServerBase.Implementations
 {
     public sealed class GameServer : IServer<GameUser>
     {
+        private const int ReceiveThreshold = 20;
+        
         private readonly IPAddress address;
         private readonly ushort port;
         private readonly int acceptQueueLength;
@@ -135,6 +137,22 @@ namespace Server.ServerBase.Implementations
                                 
                                 UserMessaged?.Invoke(this, new GameEventArgs(pool[i], content));
                                 handler.Handle(data, pool[i], this);
+                            }
+                            else
+                            {
+                                pool[i].NotReceived++;
+                                if (pool[i].NotReceived > ReceiveThreshold)
+                                {
+                                    try
+                                    {
+                                        pool[i].Handler.Send(Encoding.UTF8.GetBytes("ack\n"));
+                                        pool[i].NotReceived = 0;
+                                    }
+                                    catch
+                                    {
+                                        Kick(pool[i]);
+                                    }
+                                }
                             }
                         }
                     }
