@@ -1,5 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Client.ViewModels;
+using MaterialDesignThemes.Wpf;
 
 namespace Client
 {
@@ -8,22 +18,18 @@ namespace Client
     /// </summary>
     public partial class MainWindow
     {
+        private ServerConnectionHandler Server { get; set; }
+        
         public MainWindow()
         {
             InitializeComponent();
+            Server = new ServerConnectionHandler(Dispatcher);
+            DataContext = new LoginViewModel(Server, this);
         }
 
-        private void TopPanel_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
-
-        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Close();
+            Server.Send("die", null);
         }
     }
 }
